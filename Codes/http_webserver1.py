@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+import RPi.GPIO as GPIO
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -6,16 +9,15 @@ host_port = 8000
 
 
 def setupGPIO():
-    pass
-    # GPIO.setmode(GPIO.BCM)
-    # GPIO.setwarnings(False)
-    # GPIO.setup(18, GPIO.OUT)
-    # GPIO.setup(19, GPIO.IN)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(18, GPIO.OUT)
+    GPIO.setup(19, GPIO.IN)
 
 
-def getSPO2():
-    spO2 = spO2+1
-    return str(spO2)
+def getTemperature():
+    temp = os.popen("/opt/vc/bin/vcgencmd measure_temp").read()
+    return temp
 
 
 class MyServer(BaseHTTPRequestHandler):
@@ -46,9 +48,9 @@ class MyServer(BaseHTTPRequestHandler):
            </body>
            </html>
         '''
-        MyspO2 = getSPO2()
+        temp = getTemperature()
         self.do_HEAD()
-        self.wfile.write(html.format(MyspO2[5:]).encode("utf-8"))
+        self.wfile.write(html.format(temp[5:]).encode("utf-8"))
 
     def do_POST(self):
 
@@ -59,11 +61,9 @@ class MyServer(BaseHTTPRequestHandler):
         setupGPIO()
 
         if post_data == 'On':
-            print("Pi_LED will on")
-            # GPIO.output(18, GPIO.HIGH)
+            GPIO.output(18, GPIO.HIGH)
         else:
-            print("Pi_LED will off")
-            # GPIO.output(18, GPIO.LOW)
+            GPIO.output(18, GPIO.LOW)
 
         print("LED is {}".format(post_data))
         self._redirect('/')  # Redirect back to the root url
