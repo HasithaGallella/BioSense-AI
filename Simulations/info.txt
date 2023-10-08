@@ -1,0 +1,4 @@
+analogecg - contains the simulation of Analog ECG capturing circuit with using AD620A as the instrumentational amplifier
+lowPass_filter - low pass filter of the circuit
+highPass_filter - high pass filter of the circuit
+notch_filter - notch filter for 50Hz 
