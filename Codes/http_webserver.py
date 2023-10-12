@@ -1,7 +1,8 @@
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
+import random
 
-host_name = '10.0.0.184'  # IP Address of Raspberry Pi
+host_name = '192.168.8.119'  # IP Address of Raspberry Pi
 host_port = 8000
 
 
@@ -12,13 +13,15 @@ def setupGPIO():
     # GPIO.setup(18, GPIO.OUT)
     # GPIO.setup(19, GPIO.IN)
 
+spO2 =67686786
 
 def getSPO2():
-    spO2 = spO2+1
+    # spO2 = spO2+1
     return str(spO2)
 
 
 class MyServer(BaseHTTPRequestHandler):
+
 
     def do_HEAD(self):
         self.send_response(200)
@@ -37,7 +40,7 @@ class MyServer(BaseHTTPRequestHandler):
            <body 
             style="width:960px; margin: 20px auto;">
            <h1>Welcome to my Raspberry Pi</h1>
-           <p>Current GPU temperature is {}</p>
+           <p>Patient's Blood SpO2 level is {}</p>
            <form action="/" method="POST">
                Turn LED :
                <input type="submit" name="submit" value="On">
@@ -48,9 +51,10 @@ class MyServer(BaseHTTPRequestHandler):
         '''
         MyspO2 = getSPO2()
         self.do_HEAD()
-        self.wfile.write(html.format(MyspO2[5:]).encode("utf-8"))
+        self.wfile.write(html.format(MyspO2[:]).encode("utf-8"))
 
     def do_POST(self):
+        spO2 = 12345
 
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode("utf-8")
@@ -60,6 +64,7 @@ class MyServer(BaseHTTPRequestHandler):
 
         if post_data == 'On':
             print("Pi_LED will on")
+            spO2 = spO2+1
             # GPIO.output(18, GPIO.HIGH)
         else:
             print("Pi_LED will off")
@@ -72,6 +77,7 @@ class MyServer(BaseHTTPRequestHandler):
 # # # # # Main # # # # #
 
 if __name__ == '__main__':
+    spO2 = 67686786
     http_server = HTTPServer((host_name, host_port), MyServer)
     print("Server Starts - %s:%s" % (host_name, host_port))
 
