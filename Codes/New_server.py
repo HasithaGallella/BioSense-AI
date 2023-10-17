@@ -2,7 +2,7 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 
-host_name = '10.10.0.211'  # IP Address of Raspberry Pi
+host_name = ' 192.168.8.119'  # IP Address of Raspberry Pi
 host_port = 8000
 
 def setupGPIO():
@@ -55,17 +55,42 @@ class MyServer(BaseHTTPRequestHandler):
                        setInterval(updateSpO2, 1000); // Update every second
                    </script>
                </head>
+
+
                <body 
                 style="width:960px; margin: 20px auto;">
                <h1>Welcome to BioSense-AI</h1>
-               <p>Patient's Blood SpO2 level is <span id="spo2">Loading...</span></p>
+
                <form action="/" method="POST">
                    Stethoscope Analysis :
                    <input type="submit" name="submit" value="On">
                    <input type="submit" name="submit" value="Off">
                </form>
+
+               <p>Patient's BPM level is <span id="spo2">Loading...</span></p>
+               <p>Patient's Blood SpO2 level is <span id="spo2">Loading...</span></p>
+               <p>Patient's stress level is <span id="spo2">Loading...</span></p>
+
+               <h2>Patient ECG </h2>
+               <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+               
+
+               <form action="/" method="POST">
+                   Generate the AI-report :
+                   <input type="submit" name="submit" value="Generate now">
+               </form>
                </body>
+
+                <script src="index.js">
+                    // html = content , java script = behavior .... so separate these things in to bundle of files (js & html)
+                    // console js script integration (separation of concerns)
+                    // scr = source
+                </script>
+
+               
                </html>
+
+               
             '''
 
             self.do_HEAD()

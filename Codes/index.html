@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+</head>
+
+
+<body 
+ style="width:960px; margin: 20px auto; background-color: #76b9e8; overflow: hidden; padding: 20px;">
+<h1>Welcome to BioSense-AI</h1>
+
+<canvas id="StressChart" style="width:100%;max-width:600px"></canvas>
+
+<p>Patient's State : <span id="person_id">Loading...</span></p>
+<p>Patient's stress level is <span id="stress_id">Loading...</span> % </p>
+
+<form action="/" method="POST">
+    Turn SpO2 Sensor ON/OFF:
+    <input type="submit" name="submit" value="On">
+    <input type="submit" name="submit" value="Off">
+    <p>Patient's Blood SpO2 level is <span id="spo2_id">Loading...</span></p>
+    <p>Patient's BPM level is <span id="bpm_id">Loading...</span></p>
+    <br><br>
+    Stethoscope Analysis :
+    <input type="submit" name="submit" value="Connect">
+    <p>Predictions from Steathascope report: Loading...</span></p>
+</form>
+
+<h6> ECG signal of the Patient </h6>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+<form action="/" method="POST">
+    Generate the AI-report :
+    <input type="submit" name="submit" value="Generate now">
+</form>
+
+
+
+
+
+
+<script>
+     function updateValues() {
+         fetch('/person_page')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('person_id').innerHTML = data;
+             });
+
+         fetch('/stress_page')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('stress_id').innerHTML = data;
+             });
+
+          fetch('/spo2_page')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('spo2_id').innerHTML = data;
+             });
+             
+           fetch('/bpm_page')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('bpm_id').innerHTML = data;
+             });           
+
+
+     }
+     setInterval(updateValues, 1000); // Update every second
+</script>
+
+
+<script>
+    var xValues = ["Stressed", "Charam"];
+    var yValues = [51, 49];
+    var barColors = [
+      "#b91d47",
+      "#2b5797"
+    ];
+    
+    new Chart("StressChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Based on Patients SpO2 and BPM Analysis"
+        }
+      }
+    });
+</script>
+
+ <script>
+ const xValues = [100,200,300,400,500,600,700,800,900,1000];
+
+ new Chart("myChart", {
+ type: "line",
+ data: {
+     labels: xValues,
+     datasets: [{ 
+     data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478],
+     borderColor: "red",
+     fill: false
+     }, { 
+     data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
+     borderColor: "green",
+     fill: false
+     }, { 
+     data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
+     borderColor: "blue",
+     fill: false
+     }]
+ },
+ options: {
+     legend: {display: false}
+ }
+ });
+ </script>              
+
+
+ <script src="index.js"></script>
+</body>
+
+</html>

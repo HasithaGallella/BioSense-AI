@@ -2,7 +2,7 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import random
 
-host_name = '192.168.8.119'  # IP Address of Raspberry Pi
+host_name = ' 192.168.8.119'  # IP Address of Raspberry Pi
 host_port = 8000
 
 
