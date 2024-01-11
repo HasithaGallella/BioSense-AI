@@ -226,12 +226,10 @@ class MyServer(BaseHTTPRequestHandler):
         setupGPIO()
 
         if post_data == 'On':
-            print("Pi_LED will on")
-            # GPIO.output(18, GPIO.HIGH)
+            GPIO.output(18, GPIO.HIGH)
 
         else:
-            print("Pi_LED will off")
-            # GPIO.output(18, GPIO.LOW)
+            GPIO.output(18, GPIO.LOW)
 
         print("LED is {}".format(post_data))
         self._redirect('/')  # Redirect back to the root url
